@@ -1,6 +1,6 @@
 # Arch Linux Installation and Configuration
 
-Testing. This is a collection of BASH and Ansible scripts to automate the installation of [Arch Linux](https://archlinux.org/) in UEFI mode, install/enable GNOME extensions, install WhiteSur icons, and set a number of dconf settings the way I like them.
+This is a collection of BASH and Ansible scripts to automate the installation of [Arch Linux](https://archlinux.org/) in UEFI mode, install/enable GNOME extensions, install WhiteSur icons, and set a number of dconf settings the way I like them.
 
 This is my first attempt at reproducing my NixOS experience in Arch. It isn't quite as flawless, but it's very close.
 
