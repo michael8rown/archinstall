@@ -1,0 +1,40 @@
+#!/nix/store/6ph0zypyfc09fw6hlc1ygjvk2hv4j9vd-bash-5.3p3/bin/bash
+set -e
+
+# Remove Dead Interfaces
+echo "Removing old bridge br0..."
+ip link show dev "br0" >/dev/null 2>&1 && ip link del dev "br0"
+
+echo "Adding bridge br0..."
+ip link add name "br0" type bridge
+
+# Enslave child interfaces
+ip link set dev "enp1s0" master "br0"
+ip link set dev "enp1s0" up
+
+# Save list of enslaved interfaces
+echo "enp1s0
+" > /run/br0.interfaces
+
+# Enslave dynamically added interfaces which may be lost on nixos-rebuild
+#
+# if `libvirtd.service` is not running, do not use `virsh` which would try activate it via 'libvirtd.socket' and thus start it out-of-order.
+# `libvirtd.service` will set up bridge interfaces when it will start normally.
+#
+if /run/current-system/systemd/bin/systemctl --quiet is-active 'libvirtd.service'; then
+  for uri in qemu:///system lxc:///; do
+    for dom in $(/nix/store/9dn2lx9hrplbyy3zbnj7rk3lvzvwwdsh-libvirt-11.7.0/bin/virsh -c $uri list --name); do
+      /nix/store/9dn2lx9hrplbyy3zbnj7rk3lvzvwwdsh-libvirt-11.7.0/bin/virsh -c $uri dumpxml "$dom" | \
+      /nix/store/480g0759mrsilmb9a3p26ib9x52204ca-xmlstarlet-1.6.1/bin/xmlstarlet sel -t -m "//domain/devices/interface[@type='bridge'][source/@bridge='br0'][target/@dev]" -v "concat('ip link set dev ',target/@dev,' master ',source/@bridge,';')" | \
+      /nix/store/im5106h2hx9al158rz6bfa4zbmbidim7-bash-interactive-5.3p3/bin/bash
+    done
+  done
+fi
+
+
+# Enable stp on the interface
+
+
+ip link set dev "br0" up
+
+

@@ -1,0 +1,24 @@
+#!/nix/store/6ph0zypyfc09fw6hlc1ygjvk2hv4j9vd-bash-5.3p3/bin/bash
+set -e
+
+state="/run/nixos/network/addresses/br0"
+mkdir -p "$(dirname "$state")"
+
+ip link set dev "br0" up
+
+echo "10.0.0.127/24" >> $state
+echo -n "adding address 10.0.0.127/24... "
+if out=$(ip addr replace "10.0.0.127/24" dev "br0" nodad 2>&1); then
+  echo "done"
+else
+  echo "'ip addr replace \"10.0.0.127/24\" dev \"br0\"' nodad failed: $out"
+  exit 1
+fi
+
+
+state="/run/nixos/network/routes/br0"
+mkdir -p "$(dirname "$state")"
+
+
+
+

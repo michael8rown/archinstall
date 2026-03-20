@@ -1,0 +1,16 @@
+#!/nix/store/6ph0zypyfc09fw6hlc1ygjvk2hv4j9vd-bash-5.3p3/bin/bash
+set -e
+
+state="/run/nixos/network/addresses/enp1s0"
+mkdir -p "$(dirname "$state")"
+
+ip link set dev "enp1s0" up
+
+
+
+state="/run/nixos/network/routes/enp1s0"
+mkdir -p "$(dirname "$state")"
+
+
+
+

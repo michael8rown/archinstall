@@ -1,0 +1,19 @@
+#!/nix/store/6ph0zypyfc09fw6hlc1ygjvk2hv4j9vd-bash-5.3p3/bin/bash
+set -e
+
+# Set the static DNS configuration, if given.
+/nix/store/w4i32hvrm6aic8hvnv9p4xkipcdykqjb-openresolv-3.17.0/sbin/resolvconf -m 1 -a static <<EOF
+
+
+nameserver 1.1.1.1
+nameserver 8.8.8.8
+
+EOF
+
+
+# Set the default gateway
+
+ip -4 route replace default proto static via 10.0.0.1
+
+
+
