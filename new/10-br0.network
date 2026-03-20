@@ -1,0 +1,10 @@
+[Match]
+Name=br0
+
+[Network]
+DHCP=no
+Address=192.168.122.65/24
+Gateway=192.168.122.1
+DNS=1.1.1.1
+DNS=8.8.8.8
+
