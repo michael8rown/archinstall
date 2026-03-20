@@ -4,7 +4,7 @@ set -e -o pipefail
 sudo su
 pacman-key --init
 pacman -Sy git
-git clone https://github.com/michael8rown/archinstall.git
+git clone https://github.com/<username>/archinstall.git
 cd archinstall/new
 #./1.sh
 #./2.sh
@@ -24,9 +24,9 @@ cd archinstall/new
 #sudo cp etc-ssl-private-ssl-cert-snakeoil.key /etc/ssl/private/ssl-cert-snakeoil.key
 #sudo cp etc-webapps-phpmyadmin-config.inc.php /etc/webapps/phpmyadmin/config.inc.php
 #sudo cp usr-local-bin/* /usr/local/bin/.
-#sudo cp /home/michael/Documents/arch_server/transfer/system/*.* /etc/systemd/system/.
-#sudo firewall-cmd --permanent --add-port=23970/tcp
-#sudo firewall-cmd --permanent --add-port=23970/udp
+#sudo cp /home/<username>/Documents/arch_server/transfer/system/*.* /etc/systemd/system/.
+#sudo firewall-cmd --permanent --add-port=####/tcp
+#sudo firewall-cmd --permanent --add-port=####/udp
 #sudo firewall-cmd --permanent --add-port=80/tcp
 #sudo firewall-cmd --permanent --add-port=80/udp
 #sudo firewall-cmd --permanent --add-port=8080/tcp
@@ -36,15 +36,15 @@ cd archinstall/new
 #sudo firewall-cmd --permanent --add-service=http
 #sudo firewall-cmd --permanent --add-service=samba
 #sudo firewall-cmd --reload
-#rm /home/michael/.ssh/id_*
+#rm /home/<username>/.ssh/id_*
 #ssh-keygen -t rsa
 #ssh-keygen -t ed25519
-#ssh-copy-id -i ~/.ssh/id_rsa.pub -o Port=23790 michael2@michael8rown.com
+#ssh-copy-id -i ~/.ssh/id_rsa.pub -o Port=#### mmmmmm@dddddd.com
 #sudo mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
 #sudo systemctl enable --now mariadb.service
 #./mytest.sh
-#sudo cp /home/michael/Documents/arch_server/transfer/conf/extra/phpmyadmin.conf /etc/httpd/conf/extra/.
-#sudo cp /home/michael/Documents/arch_server/transfer/conf/extra/httpd-ssl.conf /etc/httpd/conf/extra/.
+#sudo cp /home/<username>/Documents/arch_server/transfer/conf/extra/phpmyadmin.conf /etc/httpd/conf/extra/.
+#sudo cp /home/<username>/Documents/arch_server/transfer/conf/extra/httpd-ssl.conf /etc/httpd/conf/extra/.
 #sudo systemctl enable --now httpd.service
 #sudo pacman -U chromium-144.0.7559.132-1-x86_64.pkg.tar.zst
 #sed -i 's/#IgnorePkg   =/IgnorePkg   = chromium/' /etc/pacman.conf
@@ -53,7 +53,7 @@ cd archinstall/new
 #sudo echo "HandleLidSwitchDocked=ignore" >> /etc/systemd/logind.conf 
 #sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target 
 #sudo systemctl enable --now smb.service
-#sudo smbpasswd -a michael
+#sudo smbpasswd -a <username>
 #sudo virsh define debian12-20260302.xml
 #sudo systemctl enable --now ckJobs.timer lbBkup.timer goToSleep.timer wc.timer hiTemp.timer ckUpd.timer aspenStatus.timer changedFiles.service
 #clamav freshclam
