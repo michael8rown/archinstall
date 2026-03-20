@@ -48,4 +48,4 @@ qemu-full
 bc
 qemu-system-x86
 qemu-system-x86-firmware
-systemd-resolvconf
+openresolv
