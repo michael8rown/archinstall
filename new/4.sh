@@ -16,6 +16,7 @@ systemctl enable sshd.service
 systemctl enable firewalld.service
 systemctl enable acpid.service
 systemctl enable libvirtd.service
+systemctl enable systemd-networkd.service
 systemctl enable systemd-resolved.service
 systemctl set-default multi-user.target
 
