@@ -1,0 +1,215 @@
+  network-pre.target
+● network-pre.target - Preparation for Network
+     Loaded: loaded (/etc/systemd/system/network-pre.target; linked; preset: ignored)
+     Active: active since Tue 2026-03-17 21:20:40 MDT; 17h ago
+ Invocation: f2b8fe4ed9ba44b4b520c11f9aead7ca
+       Docs: man:systemd.special(7)
+             https://systemd.io/NETWORK_ONLINE
+
+Mar 17    aspen systemd[1]: Reached target Preparation for Network.
+============================
+nano /etc/systemd/system/network-pre.target
+
+#  SPDX-License-Identifier: LGPL-2.1-or-later
+#
+#  This file is part of systemd.
+#
+#  systemd is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU Lesser General Public License as published by
+#  the Free Software Foundation; either version 2.1 of the License, or
+#  (at your option) any later version.
+
+[Unit]
+Description=Preparation for Network
+Documentation=man:systemd.special(7)
+Documentation=https://systemd.io/NETWORK_ONLINE
+RefuseManualStart=yes
+
+__________________________________________________________________________________________
+
+
+  network-addresses-enp1s0.service
+● network-addresses-enp1s0.service - Address configuration of enp1s0
+     Loaded: loaded (/etc/systemd/system/network-addresses-enp1s0.service; enabled; preset: ignored)
+     Active: active (exited) since Tue 2026-03-17 21:20:41 MDT; 17h ago
+ Invocation: fc3049bc37b6499085c73e28aeaa6362
+    Process: 952 ExecStart=/nix/store/6nv0s3f4jmjipx99l4w60h0176ayibgx-unit-script-network-addresses-e>
+   Main PID: 952 (code=exited, status=0/SUCCESS)
+         IP: 0B in, 0B out
+         IO: 660K read, 0B written
+   Mem peak: 1.8M
+        CPU: 42ms
+
+Mar 17 21:20:41 aspen systemd[1]: Starting Address configuration of enp1s0...
+Mar 17 21:20:41 aspen systemd[1]: Finished Address configuration of enp1s0.
+============================
+nano /nix/store/6nv0s3f4jmjipx99l4w60h0176ayibgx-unit-script-network-addresses-enp1s0-start/bin/network-addresses-enp1s0-start
+#!/nix/store/6ph0zypyfc09fw6hlc1ygjvk2hv4j9vd-bash-5.3p3/bin/bash
+set -e
+
+state="/run/nixos/network/addresses/enp1s0"
+mkdir -p "$(dirname "$state")"
+
+ip link set dev "enp1s0" up
+
+
+
+state="/run/nixos/network/routes/enp1s0"
+mkdir -p "$(dirname "$state")"
+
+
+__________________________________________________________________________________________
+
+
+  network-addresses-br0.service
+● network-addresses-br0.service - Address configuration of br0
+     Loaded: loaded (/etc/systemd/system/network-addresses-br0.service; enabled; preset: ignored)
+     Active: active (exited) since Tue 2026-03-17 21:20:41 MDT; 17h ago
+ Invocation: 934e00d78ab5402cb2b443ce31bfeb0d
+    Process: 977 ExecStart=/nix/store/gb2brg3jmv2cfkl6ny9vxgam103xa6lf-unit-script-network-addresses-b>
+   Main PID: 977 (code=exited, status=0/SUCCESS)
+         IP: 0B in, 0B out
+         IO: 12K read, 0B written
+   Mem peak: 1.8M
+        CPU: 40ms
+
+Mar 17 21:20:41 aspen systemd[1]: Starting Address configuration of br0...
+Mar 17 21:20:41 aspen network-addresses-br0-start[977]: adding address 10.0.0.127/24... done
+Mar 17 21:20:41 aspen systemd[1]: Finished Address configuration of br0.
+============================
+nano /nix/store/gb2brg3jmv2cfkl6ny9vxgam103xa6lf-unit-script-network-addresses-br0-start/bin/network-addresses-br0-start
+
+#!/nix/store/6ph0zypyfc09fw6hlc1ygjvk2hv4j9vd-bash-5.3p3/bin/bash
+set -e
+
+state="/run/nixos/network/addresses/br0"
+mkdir -p "$(dirname "$state")"
+
+ip link set dev "br0" up
+
+echo "10.0.0.127/24" >> $state
+echo -n "adding address 10.0.0.127/24... "
+if out=$(ip addr replace "10.0.0.127/24" dev "br0" nodad 2>&1); then
+  echo "done"
+else
+  echo "'ip addr replace \"10.0.0.127/24\" dev \"br0\"' nodad failed: $out"
+  exit 1
+fi
+
+
+state="/run/nixos/network/routes/br0"
+mkdir -p "$(dirname "$state")"
+
+__________________________________________________________________________________________
+
+
+  network-setup.service
+● network-setup.service - Networking Setup
+     Loaded: loaded (/etc/systemd/system/network-setup.service; enabled; preset: ignored)
+     Active: active (exited) since Tue 2026-03-17 21:20:41 MDT; 17h ago
+ Invocation: bab861decc2b4dfb8bda6d75d9805dc1
+    Process: 986 ExecStart=/nix/store/r2ya98i0dr1y41nj2dl6r4k4gcajgama-unit-script-network-setup-start>
+   Main PID: 986 (code=exited, status=0/SUCCESS)
+         IP: 0B in, 0B out
+         IO: 24K read, 0B written
+   Mem peak: 3.4M
+        CPU: 130ms
+
+Mar 17 21:20:41 aspen systemd[1]: Starting Networking Setup...
+Mar 17 21:20:41 aspen systemd[1]: Finished Networking Setup.
+============================
+nano /nix/store/r2ya98i0dr1y41nj2dl6r4k4gcajgama-unit-script-network-setup-start/bin/network-setup-start
+#!/nix/store/6ph0zypyfc09fw6hlc1ygjvk2hv4j9vd-bash-5.3p3/bin/bash
+set -e
+
+# Set the static DNS configuration, if given.
+/nix/store/w4i32hvrm6aic8hvnv9p4xkipcdykqjb-openresolv-3.17.0/sbin/resolvconf -m 1 -a static <<EOF
+
+
+nameserver 1.1.1.1
+nameserver 8.8.8.8
+
+EOF
+
+
+# Set the default gateway
+
+ip -4 route replace default proto static via 10.0.0.1
+
+__________________________________________________________________________________________
+
+
+  network.target
+● network.target - Network
+     Loaded: loaded (/etc/systemd/system/network.target; linked; preset: ignored)
+     Active: active since Tue 2026-03-17 21:20:41 MDT; 17h ago
+ Invocation: ea0f9256955b4195957b8b30866bfd69
+       Docs: man:systemd.special(7)
+             https://systemd.io/NETWORK_ONLINE
+
+Mar 17 21:20:41 aspen systemd[1]: Reached target Network.
+============================
+nano /etc/systemd/system/network.target
+
+#  SPDX-License-Identifier: LGPL-2.1-or-later
+#
+#  This file is part of systemd.
+#
+#  systemd is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU Lesser General Public License as published by
+#  the Free Software Foundation; either version 2.1 of the License, or
+#  (at your option) any later version.
+
+[Unit]
+Description=Network
+Documentation=man:systemd.special(7)
+Documentation=https://systemd.io/NETWORK_ONLINE
+After=network-pre.target
+RefuseManualStart=yes
+
+__________________________________________________________________________________________
+
+
+  network-online.target
+● network-online.target - Network is Online
+     Loaded: loaded (/etc/systemd/system/network-online.target; linked; preset: ignored)
+     Active: active since Tue 2026-03-17 21:20:42 MDT; 17h ago
+ Invocation: 045d9706e4604e13b9d1089ad954bc8b
+       Docs: man:systemd.special(7)
+             https://systemd.io/NETWORK_ONLINE
+
+Mar 17 21:20:42 aspen systemd[1]: Reached target Network is Online.
+============================
+nano /etc/systemd/system/network-online.target
+
+#  SPDX-License-Identifier: LGPL-2.1-or-later
+#
+#  This file is part of systemd.
+#
+#  systemd is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU Lesser General Public License as published by
+#  the Free Software Foundation; either version 2.1 of the License, or
+#  (at your option) any later version.
+
+[Unit]
+Description=Network is Online
+Documentation=man:systemd.special(7)
+Documentation=https://systemd.io/NETWORK_ONLINE
+After=network.target
+
+
+=======================================
+
+Mar 17 21:20:42 aspen systemd[1]: Starting ClamAV virus database updater (freshclam)...
+Mar 17 21:20:42 aspen systemd[1]: Starting Apache HTTPD...
+Mar 17 21:20:42 aspen systemd[1]: Starting libvirt legacy monolithic daemon...
+Mar 17 21:20:42 aspen systemd[1]: Starting MySQL Server...
+
+
+
+From man configuration.nix:
+
+       networking.useNetworkd
+           Whether we should use networkd as the network configuration backend or the legacy script
+           based system. Note that this option is experimental, enable at your own risk.
+
